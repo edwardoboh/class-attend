@@ -19,7 +19,7 @@ app.use("/lecturers", require("./routes/system/lecturers"))
 app.use("/attendance", require("./routes/system/attendance"))
 app.use("/courses", require("./routes/system/courses"))
 
-if(process.env.NODE_ENV == "production"){
+if(process.env.NODE_ENV === "production"){
     app.use(express.static("client/build"))
 
     app.get("*", (req, res) => {
