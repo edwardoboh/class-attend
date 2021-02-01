@@ -4,6 +4,7 @@ const Schema = mongoose.Schema
 SetCourseSchema = new Schema({
     course: String,
     lecturerName: String,
+    lecturerId: String,
     createdAt: {
         type: Date,
         default: Date.now()

@@ -46,7 +46,7 @@ route.get("/attendance", (req, res) => {
                     studentName: student.fullName, 
                     studentId: student._id,
                     lecturerName: setCourse.lecturerName,
-                    lecturerId: setCourse._id,
+                    lecturerId: setCourse.lecturerId,
                     course
                 })
         

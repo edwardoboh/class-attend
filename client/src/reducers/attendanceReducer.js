@@ -11,7 +11,7 @@ const attendanceReducer = (state, action) => {
         case types.GET_ATTENDANCE_BY_COURSE:
             return action.payload
         case types.GET_ATTENDANCE_BY_DATE_AND_COURSE:
-            console.log("Attendance reducer: ",action.payload)
+            // console.log("Attendance reducer: ",action.payload)
             return action.payload
         default:
             return []

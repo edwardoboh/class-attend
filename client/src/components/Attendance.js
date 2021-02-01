@@ -74,9 +74,6 @@ export default function Attendance() {
     date: "2021-02-01"
   })
 
-  useEffect(() => {
-  }, [])
-
   const history = useHistory()
 
   const {path, url} = useRouteMatch()
@@ -85,10 +82,11 @@ export default function Attendance() {
     setCourseSelect({...courseSelect, [event.target.name]: event.target.checked})
     if(courseSelect.course){
       let lecturerName = JSON.parse(localStorage.getItem("user")).fullName
+      let lecturerId = JSON.parse(localStorage.getItem("user"))._id
       // if(lecturer.state.user === {}){
         // lecturerName = JSON.parse(localStorage.getItem("user")).fullName
       // }
-      setCourse({course: courseSelect.course, lecturerName})
+      setCourse({course: courseSelect.course, lecturerName, lecturerId})
     }
   }
 
@@ -103,12 +101,15 @@ export default function Attendance() {
   const handleDateSubmit = () => {
     if(courseSelect.isChecked){
       if(!courseSelect.course || !courseSelect.date) return;
-      getAttendanceByDateAndCourse({dispatch, courseSelect})
+      const id = JSON.parse(localStorage.getItem("user"))._id
+      getAttendanceByDateAndCourse({dispatch, courseSelect, id})
     }
   }
 
   useEffect(() => {
-    getAllAttendance({dispatch})
+    const id = JSON.parse(localStorage.getItem("user"))._id
+    // console.log(id)
+    getAllAttendance({dispatch, id})
   }, [])
 
   return (
@@ -189,7 +190,7 @@ export default function Attendance() {
             color="primary"
             className={classes.button}
             startIcon={<RefreshIcon />}
-            onClick={() => getAllAttendance({dispatch})}
+            onClick={() => getAllAttendance({dispatch, id: JSON.parse(localStorage.getItem("user"))._id})}
             size="small"
             className={classes.inputs}
           >

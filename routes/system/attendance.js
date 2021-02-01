@@ -8,18 +8,19 @@ const SetCourse = require("../../models/SetCourse")
 
 // ROUTE::      [url]/attendance
 // Route to get all attendance records
-route.get("/", (req, res) => {
-    Attendance.find().sort({_id: -1}).then((attendances) => {
+route.get("/:id", (req, res) => {
+    const id = req.params.id
+    Attendance.find({lecturerId: id}).sort({_id: -1}).then((attendances) => {
         res.json({data: attendances, msg: "Attendance successfully gotten"})
     }).catch(e => {
         return res.json({data: "", msg: "Unable to get Student attendances"})
     })
 })
 
-// ROUTE::      [url]/attendance/?date=""&course=""
+// ROUTE::      [url]/attendance/dateandcourse/?date=""&course=""&date=""
 // Route to get attendance based on date and the course
 route.get("/dateandcourse", (req, res) => {
-    const {course, date} = req.query
+    const {course, date, id} = req.query
     let theDate = new Date(date)
     let startYear = theDate.getFullYear()
     let startMonth = theDate.getMonth()
@@ -28,7 +29,7 @@ route.get("/dateandcourse", (req, res) => {
     let start = new Date(startYear, startMonth, startDay)
     let end = new Date(startYear, startMonth, startDay + 1)
 
-    Attendance.find({ $and: [{course}, {date: {$gte: start, $lt: end}}]}, (err, attendances) => {
+    Attendance.find({ $and: [{lecturerId: id}, {course}, {date: {$gte: start, $lt: end}}]}, (err, attendances) => {
         if(err){
             return res.json({data: "", msg: "Unable to get Student attendances"})
         }
@@ -82,8 +83,8 @@ route.get("/course", (req, res) => {
 // ROUTE::      [url]/attendance/set
 // Route to POST a new attendance
 route.post("/set", (req, res) => {
-    const {course, lecturerName} = req.body
-    const newSetCourse = new SetCourse({course, lecturerName})
+    const {course, lecturerName, lecturerId} = req.body
+    const newSetCourse = new SetCourse({course, lecturerName, lecturerId})
     newSetCourse.save().then(resp => {
         res.json({data:resp, msg: "New Course Set Successfully"})
     }).catch(e => console.log(e))

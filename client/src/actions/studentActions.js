@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export const getStudents = ({dispatch}) => {
     axios.get("/students").then((resp) => {
-        console.log("The Data", resp)
+        // console.log("The Data", resp)
         // return  dispatch({
         dispatch({
             type: types.GET_STUDENTS,
