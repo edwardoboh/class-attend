@@ -8,7 +8,7 @@ export const setCourse = ({course, lecturerName, lecturerId}) => {
 }
 
 export const getAllAttendance = ({dispatch, id}) => {
-    axios.get(`/attendance/?${id}`).then((resp) => {
+    axios.get(`/attendance/?id=${id}`).then((resp) => {
         // return dispatch({
             // console.log("Attendance: ", resp)
         dispatch({

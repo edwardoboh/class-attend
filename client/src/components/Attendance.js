@@ -110,9 +110,9 @@ export default function Attendance() {
     const id = JSON.parse(localStorage.getItem("user"))._id
     // console.log(id)
     getAllAttendance({dispatch, id})
-  // }, [])
-  })
+  }, [])
 
+  
   return (
     <Paper>
       <form style={{marginBottom: ".5rem"}}>
