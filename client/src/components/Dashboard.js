@@ -32,6 +32,7 @@ import Logs from './Logs';
 import Attendance from './Attendance';
 import { signout } from '../actions/lecturerAction';
 import {LecturerContext} from '../context/LecturerContext'
+import Timetable from './Timetable'
 
 const drawerWidth = 240;
 
@@ -182,10 +183,10 @@ export default function Dashboard() {
               <ListItemIcon><CollectionsBookmarkIcon /></ListItemIcon>
               <ListItemText primary={"User Logs"} />
             </ListItem>
-            {/* <ListItem button onClick={() => history.push(`${url}/timetable`)}>
+            <ListItem button onClick={() => history.push(`${url}/timetable`)}>
               <ListItemIcon><TableChartIcon /></ListItemIcon>
               <ListItemText primary={"Timetable"} />
-            </ListItem> */}
+            </ListItem>
         </List>
         {/* <Divider />
         <List>
@@ -214,6 +215,9 @@ export default function Dashboard() {
           </Route>
           <Route path={`${path}/attendance`}>
             <Attendance />
+          </Route>
+          <Route path={`${path}/timetable`}>
+            <Timetable />
           </Route>
         {/* </Switch> */}
       </main>
