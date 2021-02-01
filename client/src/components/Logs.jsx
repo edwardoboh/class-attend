@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 import {LogContext} from '../context/LogContext'
-import {getLogs, clearLogs} from '../actions/logActions'
+import {getLogs} from '../actions/logActions'
 
 const useStyles = makeStyles({
   table: {

@@ -1,8 +1,4 @@
 import types from '../actions/types'
-import { AccordionActions } from '@material-ui/core'
-const attendance = {
-
-}
 
 const attendanceReducer = (state, action) => {
     switch(action.type){

@@ -3,7 +3,7 @@ import table from './image1.png'
 
 const Timetable = () => {
     return(
-        <img src={table}>
+        <img src={table} alt="timetable showing courses">
         </img>
     )
 }

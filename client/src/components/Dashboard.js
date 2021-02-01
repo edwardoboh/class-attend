@@ -25,7 +25,7 @@ import Button from '@material-ui/core/Button'
 // import InboxIcon from '@material-ui/icons/MoveToInbox';
 // import MailIcon from '@material-ui/icons/Mail';
 
-import {BrowserRouter as Router, Switch, Route, useHistory, Redirect, useRouteMatch} from 'react-router-dom'
+import { Route, useHistory, Redirect, useRouteMatch} from 'react-router-dom'
 import Students from './Students'
 import Courses from './Courses';
 import Logs from './Logs';

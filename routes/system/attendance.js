@@ -8,8 +8,8 @@ const SetCourse = require("../../models/SetCourse")
 
 // ROUTE::      [url]/attendance
 // Route to get all attendance records
-route.get("/:id", (req, res) => {
-    const id = req.params.id
+route.get("/", (req, res) => {
+    const id = req.query.id
     Attendance.find({lecturerId: id}).sort({_id: -1}).then((attendances) => {
         res.json({data: attendances, msg: "Attendance successfully gotten"})
     }).catch(e => {

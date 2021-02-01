@@ -1,4 +1,5 @@
-import React, {useEffect, useState, useContext} from 'react'
+// import React, {useEffect, useState, useContext} from 'react'
+import React, {useContext} from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import {LecturerContext} from '../../context/LecturerContext'
 
@@ -11,7 +12,7 @@ const PrivateRoute = (props) => {
     //     setIsAuthenticated(authState)
     // }, [])
 
-    const {state, dispatch} = useContext(LecturerContext)
+    const {state} = useContext(LecturerContext)
 
     return(
         <Route

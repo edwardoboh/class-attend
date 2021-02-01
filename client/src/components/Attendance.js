@@ -18,9 +18,9 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import {AttendanceContext} from '../context/AttendanceContext'
-import {LecturerContext} from '../context/LecturerContext'
+// import {LecturerContext} from '../context/LecturerContext'
 import {getAllAttendance, setCourse, getAttendanceByDateAndCourse} from '../actions/attendanceAction'
-import {useHistory, useRouteMatch} from 'react-router-dom'
+// import {useHistory, useRouteMatch} from 'react-router-dom'
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -66,7 +66,7 @@ const useStyles = makeStyles({
 export default function Attendance() {
   const classes = useStyles();
   const {state, dispatch} = useContext(AttendanceContext)
-  const lecturer = useContext(LecturerContext)
+  // const lecturer = useContext(LecturerContext)
 
   const [courseSelect, setCourseSelect] = useState({
     isChecked: false,
@@ -74,9 +74,9 @@ export default function Attendance() {
     date: "2021-02-01"
   })
 
-  const history = useHistory()
+  // const history = useHistory()
 
-  const {path, url} = useRouteMatch()
+  // const {path, url} = useRouteMatch()
 
   const handleChangeCheck = (event) => {
     setCourseSelect({...courseSelect, [event.target.name]: event.target.checked})
@@ -110,7 +110,8 @@ export default function Attendance() {
     const id = JSON.parse(localStorage.getItem("user"))._id
     // console.log(id)
     getAllAttendance({dispatch, id})
-  }, [])
+  // }, [])
+  })
 
   return (
     <Paper>
@@ -144,7 +145,7 @@ export default function Attendance() {
           <Button
             variant="contained"
             color="primary"
-            className={classes.button}
+            // className={classes.button}
             startIcon={<ArrowForwardIcon />}
             onClick={handleDateSubmit}
             size="small"
@@ -176,7 +177,7 @@ export default function Attendance() {
           <Button
             variant="contained"
             color="primary"
-            className={classes.button}
+            // className={classes.button}
             startIcon={<GetAppIcon />}
             // onClick={() => getAllAttendance({dispatch})}
             size="small"
@@ -188,7 +189,7 @@ export default function Attendance() {
           <Button
             variant="outlined"
             color="primary"
-            className={classes.button}
+            // className={classes.button}
             startIcon={<RefreshIcon />}
             onClick={() => getAllAttendance({dispatch, id: JSON.parse(localStorage.getItem("user"))._id})}
             size="small"

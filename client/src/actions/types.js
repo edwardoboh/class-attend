@@ -1,4 +1,4 @@
-export default {
+const types = {
     GET_STUDENTS : "GET_STUDENTS",
     ADD_STUDENT : "ADD_STUDENT",
     DELETE_STUDENT : "DELETE_STUDENT",
@@ -11,3 +11,4 @@ export default {
     GET_LOG: "GET_LOG",
     CLEAR_LOG: "CLEAR_LOG"
 }
+export default types

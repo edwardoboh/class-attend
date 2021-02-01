@@ -13,7 +13,7 @@ export const getStudents = ({dispatch}) => {
 }
 
 export const addStudent = ({dispatch, newStudent}) => {
-    const {cardId, fullName, dept, level, phone, courses, matNo} = newStudent
+    // const {cardId, fullName, dept, level, phone, courses, matNo} = newStudent
     // const newStudent = {cardId, fullName, dept, level, phone, courses, matNo}
     axios.post("/studentS/add", newStudent).then((resp) => {
         dispatch({
