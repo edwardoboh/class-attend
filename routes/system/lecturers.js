@@ -42,8 +42,8 @@ route.post("/signup", (req, res) => {
             {fullName, email, password, phone, course }
         )
         newLecturer.save().then(newLec => {
-            const user = {user: resp, isAuthenticated: true}
-            res.json({data: newLec, msg: "Successfully Created new Lecturer"})
+            const user = {user: newLec, isAuthenticated: true}
+            res.json({data: user, msg: "Successfully Created new Lecturer"})
         }).catch(e => (res.json({data:"", msg:"Unable to create new Lecturer"})))
     }).catch(e => res.json({data:"", msg:"Unable to verify email address"}))
 })

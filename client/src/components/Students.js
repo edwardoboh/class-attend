@@ -17,8 +17,8 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
+// import Paper from '@material-ui/core/Paper';
+// import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -26,6 +26,8 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Button from '@material-ui/core/Button'
+// import Grid from '@material-ui/core/Grid'
+import FormGroup from '@material-ui/core/FormGroup';
 
 // function createData(fullName, cardId, dept, level, imgUrl, phone, courses) {
 //   return { fullName, cardId, dept, level, imgUrl, phone, courses };
@@ -105,12 +107,12 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         <TableCell padding="checkbox">
-          <Checkbox
+          {/* <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{ 'aria-label': 'select all desserts' }}
-          />
+          /> */}
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
@@ -346,8 +348,8 @@ export default function Students() {
   return (
     <div className={classes.root}>
       {/* <Paper className={classes.paper}> */}
-      <div>
-              <Button variant="outlined" color="primary" onClick={handleOpen}>
+            <FormGroup row>
+              <Button variant="outlined" color="primary" onClick={handleOpen} style={{marginLeft: "auto"}}>
                 CREATE STUDENT
               </Button>
               <Modal
@@ -356,8 +358,8 @@ export default function Students() {
               >
                 <CreateStudent />
               </Modal>
-            </div>
-        <EnhancedTableToolbar numSelected={selected.length} />
+            </FormGroup>
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table
             className={classes.table}
@@ -395,10 +397,10 @@ export default function Students() {
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
-                        <Checkbox
+                        {/* <Checkbox
                           checked={isItemSelected}
                           inputProps={{ 'aria-labelledby': labelId }}
-                        />
+                        /> */}
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
                         {row.cardId}
@@ -406,7 +408,7 @@ export default function Students() {
                       <TableCell align="right">{row.fullName}</TableCell>
                       <TableCell align="right">{row.dept}</TableCell>
                       <TableCell align="right">{row.level}</TableCell>
-                      <TableCell align="right">{row.imgUrl}</TableCell>
+                      <TableCell align="right"><a href="#">{row.imgUrl}</a></TableCell>
                       <TableCell align="right">{row.phone}</TableCell>
                       <TableCell align="right">{row.courses.map(course => `${course}, `)}</TableCell>
                     </TableRow>

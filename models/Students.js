@@ -3,6 +3,7 @@ const Schema = mongoose.Schema
 
 const StudentSchema = new Schema({
     cardId: String,
+    matNo: String,
     fullName: String,
     dept: String,
     level: String,

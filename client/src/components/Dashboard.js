@@ -28,6 +28,7 @@ import Button from '@material-ui/core/Button'
 import {BrowserRouter as Router, Switch, Route, useHistory, Redirect, useRouteMatch} from 'react-router-dom'
 import Students from './Students'
 import Courses from './Courses';
+import Logs from './Logs';
 import Attendance from './Attendance';
 import { signout } from '../actions/lecturerAction';
 import {LecturerContext} from '../context/LecturerContext'
@@ -173,18 +174,18 @@ export default function Dashboard() {
               <ListItemIcon><PeopleIcon /></ListItemIcon>
               <ListItemText primary={"Students"} />
             </ListItem>
-            <ListItem button onClick={() => history.push(`${url}/courses`)}>
-              <ListItemIcon><CollectionsBookmarkIcon /></ListItemIcon>
-              <ListItemText primary={"Courses"} />
-            </ListItem>
             <ListItem button onClick={() => history.push(`${url}/attendance`)}>
               <ListItemIcon><SpellcheckIcon /></ListItemIcon>
               <ListItemText primary={"Attendace"} />
             </ListItem>
-            <ListItem button onClick={() => history.push(`${url}/timetable`)}>
+            <ListItem button onClick={() => history.push(`${url}/logs`)}>
+              <ListItemIcon><CollectionsBookmarkIcon /></ListItemIcon>
+              <ListItemText primary={"User Logs"} />
+            </ListItem>
+            {/* <ListItem button onClick={() => history.push(`${url}/timetable`)}>
               <ListItemIcon><TableChartIcon /></ListItemIcon>
               <ListItemText primary={"Timetable"} />
-            </ListItem>
+            </ListItem> */}
         </List>
         {/* <Divider />
         <List>
@@ -207,6 +208,9 @@ export default function Dashboard() {
           </Route>
           <Route path={`${path}/courses`}>
             <Courses />
+          </Route>
+          <Route path={`${path}/logs`}>
+            <Logs />
           </Route>
           <Route path={`${path}/attendance`}>
             <Attendance />

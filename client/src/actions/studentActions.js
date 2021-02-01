@@ -12,14 +12,14 @@ export const getStudents = ({dispatch}) => {
     })
 }
 
-export const addStudent = (student) => {
-    const {cardId, fullName, dept, level, phone, courses} = student
-    const newStudent = {cardId, fullName, dept, level, phone, courses}
-    axios.post("/student/add", newStudent).then((resp) => {
-        return {
+export const addStudent = ({dispatch, newStudent}) => {
+    const {cardId, fullName, dept, level, phone, courses, matNo} = newStudent
+    // const newStudent = {cardId, fullName, dept, level, phone, courses, matNo}
+    axios.post("/studentS/add", newStudent).then((resp) => {
+        dispatch({
             type: types.ADD_STUDENT,
             payload: resp.data.data
-        }
+        })
     })
 }
 

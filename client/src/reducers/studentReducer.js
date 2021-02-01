@@ -4,8 +4,8 @@ const studentReducer = (state, action) => {
     switch(action.type){
         case types.ADD_STUDENT:
             return [
-                ...state,
-                action.payload
+                action.payload,
+                ...state
             ]
         case types.DELETE_STUDENT:
             return [...state.filter(item => (item._id !== action.payload))]

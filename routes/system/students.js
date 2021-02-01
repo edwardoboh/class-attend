@@ -19,7 +19,7 @@ route.get("/", (req, res) => {
 // Route to POST a new student
 route.post("/add", (req, res) => {
     // Save student Image to cloudinary and insert the url here
-    const {cardId, fullName, dept, level, imgUrl, phone, courses} = req.body
+    const {cardId, fullName, dept, level, imgUrl, phone, courses, matNo} = req.body
 
     // Check cardId to see if it is already in system or not
     // If in system, return error. If not, register thhe student
@@ -28,7 +28,7 @@ route.post("/add", (req, res) => {
             return res.json({data: "", msg: "Error: A student with this ID already Exist"})
         }
         
-        const newStudent = new Students({cardId, fullName, dept, level, imgUrl, phone, courses})
+        const newStudent = new Students({matNo, cardId, fullName, dept, level, imgUrl, phone, courses})
         newStudent.save((err, theStudent) => {
             if(err){
                 return res.json({date: "", msg: "Unable to create new student"})

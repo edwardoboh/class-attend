@@ -19,7 +19,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import {AttendanceContext} from '../context/AttendanceContext'
 import {LecturerContext} from '../context/LecturerContext'
-import {getAllAttendance, setCourse} from '../actions/attendanceAction'
+import {getAllAttendance, setCourse, getAttendanceByDateAndCourse} from '../actions/attendanceAction'
 import {useHistory, useRouteMatch} from 'react-router-dom'
 
 const StyledTableCell = withStyles((theme) => ({
@@ -56,6 +56,10 @@ const useStyles = makeStyles({
   table: {
     minWidth: 700,
   },
+  inputs: {
+    marginTop: ".5rem",
+    marginBottom: ".5rem",
+  }
 });
 
 
@@ -66,7 +70,8 @@ export default function Attendance() {
 
   const [courseSelect, setCourseSelect] = useState({
     isChecked: false,
-    course: null
+    course: null,
+    date: null
   })
 
   useEffect(() => {
@@ -79,10 +84,10 @@ export default function Attendance() {
   const handleChangeCheck = (event) => {
     setCourseSelect({...courseSelect, [event.target.name]: event.target.checked})
     if(courseSelect.course){
-      let lecturerName = ""
-      if(lecturer.state.user === {}){
-        lecturerName = JSON.parse(localStorage.getItem("user")).fullName
-      }
+      let lecturerName = JSON.parse(localStorage.getItem("user")).fullName
+      // if(lecturer.state.user === {}){
+        // lecturerName = JSON.parse(localStorage.getItem("user")).fullName
+      // }
       setCourse({course: courseSelect.course, lecturerName})
     }
   }
@@ -91,23 +96,35 @@ export default function Attendance() {
     setCourseSelect({...courseSelect, [event.target.name]: event.target.value})
   }
 
+  const handleDateSelect = (event) => {
+    setCourseSelect({...courseSelect, [event.target.name]: event.target.value})
+  }
+
+  const handleDateSubmit = () => {
+    if(courseSelect.isChecked){
+      if(!courseSelect.course || !courseSelect.date) return;
+      getAttendanceByDateAndCourse({dispatch, courseSelect})
+    }
+  }
+
   useEffect(() => {
     getAllAttendance({dispatch})
   }, [])
 
   return (
     <Paper>
-      <form style={{marginBottom: ".8rem"}}>
-        <FormGroup row>
+      <form style={{marginBottom: ".5rem"}}>
+        <FormGroup row style={{paddingLeft: ".5rem"}}>
           <TextField
             id="outlined-basic"
             disabled={courseSelect.isChecked}
-            label="Set Course"
+            label="Set Course (e.g MCT504)"
             variant="outlined"
             name="course"
             onChange={handleChangeCourse}
             value={courseSelect.course}
             style={{marginRight: ".8rem"}}
+            className={classes.inputs}
           />
           <FormControlLabel
             control={
@@ -120,17 +137,19 @@ export default function Attendance() {
             }
             label="Set"
             // style={{marginRight: ".8rem"}}
+            className={classes.inputs}
           />
-          <Divider orientation="vertical" flexItem style={{marginRight: "2rem", marginLeft:"2rem"}}/>
+          <Divider orientation="vertical" flexItem style={{marginRight: "1.5rem", marginLeft:"1.5rem"}}/>
           <Button
             variant="contained"
             color="primary"
             className={classes.button}
             startIcon={<ArrowForwardIcon />}
-            // onClick={() => getAllAttendance({dispatch})}
+            onClick={handleDateSubmit}
             size="small"
             // style={{width: "8rem"}}
-            style={{marginRight: "2rem", width: "8rem"}}
+            style={{marginRight: "1.8rem", width: "8rem"}}
+            className={classes.inputs}
           >
             Fetch
           </Button>
@@ -142,16 +161,17 @@ export default function Attendance() {
                 // label="Set Course"
                 variant="outlined"
                 name="date"
-                // onChange={}
-                // value={}
+                onChange={handleDateSelect}
+                value={courseSelect.date}
                 type="date"
                 // style={{marginRight: ".8rem"}}
               />
             }
             label="Select Date"
             // style={{marginLeft: "1rem"}}
+            className={classes.inputs}
           />
-          <Divider orientation="vertical" flexItem style={{marginRight: "2rem", marginLeft:"2rem"}}/>
+          <Divider orientation="vertical" flexItem style={{marginRight: "1.5rem", marginLeft:".8rem"}}/>
           <Button
             variant="contained"
             color="primary"
@@ -159,10 +179,11 @@ export default function Attendance() {
             startIcon={<GetAppIcon />}
             // onClick={() => getAllAttendance({dispatch})}
             size="small"
+            className={classes.inputs}
           >
             Download CSV
           </Button>
-          <Divider orientation="vertical" flexItem style={{marginRight: "2rem", marginLeft:"2rem"}}/>
+          <Divider orientation="vertical" flexItem style={{marginRight: "1.5rem", marginLeft:".8rem"}}/>
           <Button
             variant="outlined"
             color="primary"
@@ -170,6 +191,7 @@ export default function Attendance() {
             startIcon={<RefreshIcon />}
             onClick={() => getAllAttendance({dispatch})}
             size="small"
+            className={classes.inputs}
           >
             Refresh
           </Button>

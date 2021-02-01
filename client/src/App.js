@@ -10,6 +10,7 @@ import SignUp from './components/auth/SignUp'
 import { StudentProvider } from './context/StudentContext'
 import { AttendanceProvider } from './context/AttendanceContext'
 import { LecturerProvider } from './context/LecturerContext'
+import LogProvider from './context/LogContext'
 
 function App() {
   return (
@@ -29,7 +30,9 @@ function App() {
                   <SignUp />
                 </PublicRoute>
                 <PrivateRoute path="/dashboard">
-                  <Dashboard />
+                  <LogProvider>
+                    <Dashboard />
+                  </LogProvider>
                 </PrivateRoute>
               </Switch>
             </Router>

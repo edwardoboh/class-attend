@@ -9,9 +9,11 @@ import Checkbox from '@material-ui/core/Checkbox'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper'
-import Input from '@material-ui/core/Input'
-import Typography from '@material-ui/core/Typography'
-import { useState } from 'react';
+// import Input from '@material-ui/core/Input'
+// import Typography from '@material-ui/core/Typography'
+import { useState, useContext } from 'react';
+import {addStudent} from '../actions/studentActions'
+import {StudentContext} from '../context/StudentContext'
 
 const useStyles2 = makeStyles((theme) => ({
   root: {
@@ -44,34 +46,26 @@ const useStyles = makeStyles(theme => ({
 export default function CreateStudent() {
   const classes = useStyles();
   const classes2 = useStyles2();
-  const courses = ["MECH", "CPE", "CVE", "PRE", "MTH", "ENG", "GST", "PHY", "CHE", "CHM", "EEE", "GEO"]
+  const courses = ["MCT502", "MCT304", "MCT508", "MCT516", "MCT506", "MCT510", "MCT313", "MCT528", "MCT524", "MCT526", "MCT512", "MCT504", "MCT314", "FET504"]
   const [state, setState] = useState({
-      MECH: true,
-      CPE: false,
-      CVE: false,
-      PRE: false,
-      MTH: true,
-      ENG: true,
-      GST: false,
-      PHY: false,
-      CHE: false,
-      CHM: true,
-      EEE: false,
-      GEO: true
+     MCT502: false, MCT304: false, MCT508: true, MCT516: true, MCT506: false, MCT510: false, MCT313: false, MCT528: true, MCT524: false, MCT526: false, MCT512: false, MCT504: false, MCT314: false, FET504: false
   })
+
+  const student = useContext(StudentContext)
 
   const [formState, setFormState] = useState({
-      cardId: null,
-      fullName: null,
-      matNo: null,
-      departmant: null,
-      level: null,
-      phone: null,
-      imgUrl: null
+      cardId: "",
+      fullName: "",
+      matNo: "",
+      dept: "",
+      level: "",
+      phone: "",
+      imgUrl: ""
   })
 
-  const {MECH, CPE, CVE, PRE, MTH, ENG, GST, PHY, CHE, CHM, EEE, GEO} = state
-  const error = [MECH, CPE, CVE, PRE, MTH, ENG, GST, PHY, CHE, CHM, EEE, GEO].filter(one => one).length < 3
+//   const {MCT502, MCT304, MCT508, MCT516, MCT506, MCT510, MCT313, MCT528, MCT524, MCT526, MCT512, MCT504, MCT314, FET504} = state
+//   const error = [MCT502, MCT304, MCT508, MCT516, MCT506, MCT510, MCT313, MCT528, MCT524, MCT526, MCT512, MCT504, MCT314, FET504].filter(one => one).length < 3
+const error = false
 
   const getCourses = () => {
       return courses.filter(course => state[course])
@@ -85,39 +79,56 @@ export default function CreateStudent() {
       setFormState({...formState, [e.target.name]: e.target.value})
   }
 
+  const handleFormSubmit = (e) => {
+      const theSelectCourse = getCourses()
+      addStudent({dispatch: student.dispatch, newStudent: {...formState, courses: theSelectCourse}})
+  }
 
   return (
     <Paper style={{top: `50%`, left: `50%`, transform: `translate(-50%, -50%)`}} className={classes.paper}>
-        <Typography variant="h6" gutterBottom>
+        {/* <Typography variant="h6" gutterBottom>
             CREATE STUDENT
-      </Typography>
+      </Typography> */}
+      {/* <Button
+            variant="contained"
+            color="primary"
+            style={{margin: ".5rem"}}
+            onClick={handleFormSubmit}
+            fullWidth
+        >
+            CREATE STUDENT
+        </Button> */}
     <form className={classes2.root} noValidate autoComplete="off">
-      <TextField id="outlined-basic" onChange={handleFormChange} name="fullName" value={formState.fullName} label="Full Name"  variant="outlined" />
-      <TextField id="outlined-basic" onChange={handleFormChange} name="matNo" value={formState.matNo} label="Mat No."  variant="outlined" />
-      <TextField id="outlined-basic" onChange={handleFormChange} name="cardId" value={formState.cardId} label="Card ID" variant="outlined" />
-        <TextField id="outlined-basic" name="imgUrl" label="" accept="image/*" placeholder="select image" variant="outlined" style={{width:"93%"}} type="file"/>
-      <TextField id="outlined-basic" onChange={handleFormChange} name="department" value={formState.departmant} label="Department" variant="outlined" />
-      <TextField id="outlined-basic" onChange={handleFormChange} name="level" value={formState.level} label="Level" variant="outlined" />
-      <TextField id="outlined-basic" onChange={handleFormChange} name="phone" value={formState.phone} label="Phone Number" variant="outlined" />
+      <TextField id="outlined-basic1" onChange={handleFormChange} name="fullName" value={formState.fullName} label="Full Name"  variant="outlined" />
+      <TextField id="outlined-basic2" onChange={handleFormChange} name="matNo" value={formState.matNo} label="Mat No."  variant="outlined" />
+      <TextField id="outlined-basic3" onChange={handleFormChange} name="cardId" value={formState.cardId} label="Card ID" variant="outlined" />
+        <TextField id="outlined-basic4" name="imgUrl" label="" accept="image/*" placeholder="select image" variant="outlined" style={{width:"93%"}} type="file"/>
+      <TextField id="outlined-basic5" onChange={handleFormChange} name="dept" value={formState.dept} label="Department" variant="outlined" />
+      <TextField id="outlined-basic6" onChange={handleFormChange} name="level" value={formState.level} label="Level" variant="outlined" />
+      <TextField id="outlined-basic7" onChange={handleFormChange} name="phone" value={formState.phone} label="Phone Number" variant="outlined" />
       <Paper variant="outlined">
         <FormControl required error={error} component="fieldset" className={classes.formControl}>
-            <FormLabel component="legend">Select 3 Courses at Least</FormLabel>
+            <FormLabel component="legend">Select Your Courses</FormLabel>
             <FormGroup>
             <FormControlLabel
-                control={<Checkbox checked={MECH} onChange={handleChange} name="MECH" />}
-                label="MECH"
+                control={<Checkbox onChange={handleChange} name="MCT502" />}
+                label="MCT502"
             />
             <FormControlLabel
-                control={<Checkbox checked={CPE} onChange={handleChange} name="CPE" />}
-                label="CPE"
+                control={<Checkbox onChange={handleChange} name="MCT516" />}
+                label="MCT516"
             />
             <FormControlLabel
-                control={<Checkbox checked={CVE} onChange={handleChange} name="CVE" />}
-                label="CVE"
+                control={<Checkbox onChange={handleChange} name="MCT313" />}
+                label="MCT313"
             />
             <FormControlLabel
-                control={<Checkbox checked={PRE} onChange={handleChange} name="PRE" />}
-                label="PRE"
+                control={<Checkbox onChange={handleChange} name="MCT526" />}
+                label="MCT526"
+            />
+            <FormControlLabel
+                control={<Checkbox onChange={handleChange} name="MCT314" />}
+                label="MCT314"
             />
             </FormGroup>
             {/* <FormHelperText>Must Offer three Courses at least</FormHelperText> */}
@@ -127,20 +138,24 @@ export default function CreateStudent() {
             <FormLabel component="legend"></FormLabel>
             <FormGroup>
             <FormControlLabel
-                control={<Checkbox checked={MTH} onChange={handleChange} name="MTH" />}
-                label="MTH"
+                control={<Checkbox onChange={handleChange} name="MCT304" />}
+                label="MCT304"
             />
             <FormControlLabel
-                control={<Checkbox checked={CHE} onChange={handleChange} name="CHE" />}
-                label="CHE"
+                control={<Checkbox onChange={handleChange} name="MCT506" />}
+                label="MCT506"
             />
             <FormControlLabel
-                control={<Checkbox checked={ENG} onChange={handleChange} name="ENG" />}
-                label="ENG"
+                control={<Checkbox onChange={handleChange} name="MCT528" />}
+                label="MCT528"
             />
             <FormControlLabel
-                control={<Checkbox checked={GST} onChange={handleChange} name="GST" />}
-                label="GST"
+                control={<Checkbox onChange={handleChange} name="MCT512" />}
+                label="MCT512"
+            />
+            <FormControlLabel
+                control={<Checkbox onChange={handleChange} name="MCT504" />}
+                label="MCT504"
             />
             </FormGroup>
             {/* <FormHelperText>Must Offer a Course here</FormHelperText> */}
@@ -150,20 +165,20 @@ export default function CreateStudent() {
             <div></div>
             <FormGroup>
             <FormControlLabel
-                control={<Checkbox checked={PHY} onChange={handleChange} name="PHY" />}
-                label="PHY"
+                control={<Checkbox onChange={handleChange} name="MCT508" />}
+                label="MCT508"
             />
             <FormControlLabel
-                control={<Checkbox checked={CHM} onChange={handleChange} name="CHM" />}
-                label="CHM"
+                control={<Checkbox onChange={handleChange} name="MCT510" />}
+                label="MCT510"
             />
             <FormControlLabel
-                control={<Checkbox checked={EEE} onChange={handleChange} name="EEE" />}
-                label="EEE"
+                control={<Checkbox onChange={handleChange} name="MCT524" />}
+                label="MCT524"
             />
             <FormControlLabel
-                control={<Checkbox checked={GEO} onChange={handleChange} name="GEO" />}
-                label="GEO"
+                control={<Checkbox onChange={handleChange} name="MCT504" />}
+                label="MCT504"
             />
             </FormGroup>
             {/* <FormHelperText>Must Offer a Course here</FormHelperText> */}
@@ -173,9 +188,11 @@ export default function CreateStudent() {
         <Button
             variant="contained"
             color="primary"
-            style={{width: 200, marginTop: "1rem"}}
+            style={{margin: ".5rem"}}
+            onClick={handleFormSubmit}
+            fullWidth
         >
-            ADD
+            CREATE STUDENT
         </Button>
         </Paper>
   );

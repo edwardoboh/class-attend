@@ -24,6 +24,7 @@ route.get("/dateandcourse", (req, res) => {
     let startYear = theDate.getFullYear()
     let startMonth = theDate.getMonth()
     let startDay = theDate.getDate()
+    // console.log("Full Date: ", theDate, "Day: ", theDate.getDay(),"Date:", theDate.getDate(), "Month: ", startMonth, "Year: ", startYear)
     let start = new Date(startYear, startMonth, startDay)
     let end = new Date(startYear, startMonth, startDay + 1)
 
@@ -85,6 +86,14 @@ route.post("/set", (req, res) => {
     const newSetCourse = new SetCourse({course, lecturerName})
     newSetCourse.save().then(resp => {
         res.json({data:resp, msg: "New Course Set Successfully"})
+    }).catch(e => console.log(e))
+})
+
+// ROUTE::      [url]/attendance/set
+// Route to POST a new attendance
+route.get("/logs", (req, res) => {
+    SetCourse.find().sort({_id: -1}).then(resp => {
+        res.json({data:resp, msg: "All Attendance Logs"})
     }).catch(e => console.log(e))
 })
 
