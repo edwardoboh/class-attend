@@ -70,8 +70,8 @@ export default function Attendance() {
 
   const [courseSelect, setCourseSelect] = useState({
     isChecked: false,
-    course: null,
-    date: null
+    course: "",
+    date: "2021-02-01"
   })
 
   useEffect(() => {
@@ -210,8 +210,8 @@ export default function Attendance() {
         </TableHead>
         <TableBody>
           {/* {rows.map((row) => ( */}
-          {state.map((row) => (
-            <StyledTableRow key={row.studentId}>
+          {state && state.map((row) => (
+            <StyledTableRow key={row._id}>
               <StyledTableCell component="th" scope="row">
                 {row.studentName}
               </StyledTableCell>

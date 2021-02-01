@@ -30,9 +30,10 @@ export const getAttendanceByCourse = (course) => {
 export const getAttendanceByDateAndCourse = ({dispatch, courseSelect}) => {
     const {date, course} = courseSelect
     axios.get(`/attendance/dateandcourse/?date=${date}&course=${course}`).then((resp) => {
-        return {
+        console.log("Attendance Action: ", resp)
+        dispatch({
             type: types.GET_ATTENDANCE_BY_DATE_AND_COURSE,
             payload: resp.data.data
-        }
+        })
     }).catch(e => console.log(e))
 }
