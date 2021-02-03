@@ -17,11 +17,12 @@ route.get("/attendance", (req, res) => {
     SetCourse.find().sort({_id: -1}).skip(SetCourse.count() - 1).then(theSetCourse => {
         const setCourse = theSetCourse[0]
         course = setCourse.course
-        console.log(course)
+        // console.log(course)
         
         Students.findOne({cardId}).then(student => {
             if(student == null){
-                return res.json({data: "", msg: "Error: This card has not been registered"})
+                // return res.json({data: "", msg: "Error: This card has not been registered"})
+                return res.send("MCT111")
             }
             // Check to see if student has already taken attendance
             // Check to see if student has already taken attendance
@@ -35,9 +36,10 @@ route.get("/attendance", (req, res) => {
     
             Attendance.findOne({$and: [{cardId}, {course}, {date: {$gt: start, $lt: end}}]}).then(resp => {
             // Attendance.find({cardId, course, date: {$gte: start, $lt: end}}).then(resp => {
-                console.log(resp)
+                // console.log(resp)
                 if(resp !== null){
-                    return res.json({data:"", msg:"Attendance Already Taken Today"})
+                    // return res.json({data:"", msg:"Attendance Already Taken Today"})
+                    return res.send("MCT222")
                 }
     
                 // Get lecture of this Course to take attendance
