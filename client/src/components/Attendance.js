@@ -22,6 +22,9 @@ import {AttendanceContext} from '../context/AttendanceContext'
 import {getAllAttendance, setCourse, getAttendanceByDateAndCourse} from '../actions/attendanceAction'
 // import {useHistory, useRouteMatch} from 'react-router-dom'
 
+import { CSVLink } from "react-csv";
+
+
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.black,
@@ -174,7 +177,7 @@ export default function Attendance() {
             className={classes.inputs}
           />
           <Divider orientation="vertical" flexItem style={{marginRight: "1.5rem", marginLeft:".8rem"}}/>
-          <Button
+          {/* <Button
             variant="contained"
             color="primary"
             // className={classes.button}
@@ -184,7 +187,34 @@ export default function Attendance() {
             className={classes.inputs}
           >
             Download CSV
-          </Button>
+          </Button> */}
+          <CSVLink
+            data={state}
+            headers={
+              [
+                { label: "Student Name", key: "studentName" },
+                { label: "Card ID", key: "cardId" },
+                { label: "Course", key: "course" },
+                { label: "Lecturer", key: "lecturerName" },
+                { label: "Date", key: "date" }
+              ]
+            }
+            filename={`Attendance-${courseSelect.date}.csv`}
+            className="btn btn-primary"
+            target="_blank"
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              // className={classes.button}
+              startIcon={<GetAppIcon />}
+              // onClick={() => getAllAttendance({dispatch})}
+              size="small"
+              className={classes.inputs}
+            >
+              Download CSV
+            </Button>
+          </CSVLink>;
           <Divider orientation="vertical" flexItem style={{marginRight: "1.5rem", marginLeft:".8rem"}}/>
           <Button
             variant="outlined"

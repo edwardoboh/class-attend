@@ -53,10 +53,10 @@ route.get("/attendance", (req, res) => {
                 })
         
                 newAttendance.save().then(resp => {
-                    res.json({data: resp, msg: "Attendance taken Successfully"})
-                }).catch(e => {
-                    // res.json({data:"", msg: "Error while trying to save attendance"})
+                    // res.json({data: resp, msg: "Attendance taken Successfully"})
                     return res.send("MCT333")
+                }).catch(e => {
+                    res.json({data:"", msg: "Error while trying to save attendance"})
                 })
             })
     
