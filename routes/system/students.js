@@ -7,11 +7,10 @@ const Students = require("../../models/Students")
 // ROUTE::      [url]/students
 // Route to get all students
 route.get("/", (req, res) => {
-    Students.find((err, students) => {
-        if(err){
-            return res.json({data: "", msg: "Unable to get students from database"})
-        }
+    Students.find().sort({_id: -1}).then((students) => {
         res.json({data: students, msg: "Get all students successful"})
+    }).catch(e => {
+        res.json({data: "", msg: "Unable to get students from database"})
     })
 })
 

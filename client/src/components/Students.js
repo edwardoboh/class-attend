@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import {StudentContext} from '../context/StudentContext'
-import { getStudents} from '../actions/studentActions'
+import { getStudents, deleteStudent} from '../actions/studentActions'
 
 import CreateStudent from './CreateStudent'
 import Modal from '@material-ui/core/Modal'
@@ -88,8 +88,9 @@ function stableSort(array, comparator) {
 
 const headCells = [
   // { id: 'matNo', numeric: true, disablePadding: false, label: 'MAT NO.' },
-  { id: 'cardId', numeric: false, disablePadding: true, label: 'MAT NO.' },
+  { id: 'matNo', numeric: false, disablePadding: true, label: 'MAT NO.' },
   { id: 'fullName', numeric: true, disablePadding: false, label: 'STUDENT NAME' },
+  { id: 'cardId', numeric: true, disablePadding: false, label: 'CARD ID' },
   { id: 'department', numeric: true, disablePadding: false, label: 'DEPARTMENT' },
   { id: 'level', numeric: true, disablePadding: false, label: 'LEVEL' },
   { id: 'imgUrl', numeric: true, disablePadding: false, label: 'IMAGE URL' },
@@ -248,6 +249,10 @@ export default function Students() {
   // }, [])
   })
 
+  const deleteAStudent = (id) => {
+    deleteStudent({dispatch, id})
+  }
+
   // const {fullName, cardId, dept, level, imgUrl, phone, courses}  = state
   // const rows = state.map(aStudent => {
   //   return(
@@ -358,7 +363,7 @@ export default function Students() {
                 open={open}
                 onClose={handleClose}
               >
-                <CreateStudent />
+                <CreateStudent closeForm={handleClose}/>
               </Modal>
             </FormGroup>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
@@ -382,7 +387,8 @@ export default function Students() {
             />
             
             <TableBody>
-              {state && stableSort(state, getComparator(order, orderBy))
+              {/* {state && stableSort(state, getComparator(order, orderBy)) */}
+              {state && state
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.name);
@@ -403,14 +409,18 @@ export default function Students() {
                           checked={isItemSelected}
                           inputProps={{ 'aria-labelledby': labelId }}
                         /> */}
+                        <IconButton aria-label="delete">
+                          <DeleteIcon onClick={() => {deleteAStudent(row._id)}}/>
+                        </IconButton>
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.cardId}
+                        {row.matNo}
                       </TableCell>
                       <TableCell align="right">{row.fullName}</TableCell>
+                      <TableCell align="right">{row.cardId}</TableCell>
                       <TableCell align="right">{row.dept}</TableCell>
                       <TableCell align="right">{row.level}</TableCell>
-                      <TableCell align="right"><a href="#">{row.imgUrl}</a></TableCell>
+                      <TableCell align="right"><a href={row.imgUrl} target="_blank">Show</a></TableCell>
                       <TableCell align="right">{row.phone}</TableCell>
                       <TableCell align="right">{row.courses.map(course => `${course}, `)}</TableCell>
                     </TableRow>

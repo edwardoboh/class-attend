@@ -23,11 +23,11 @@ export const addStudent = ({dispatch, newStudent}) => {
     })
 }
 
-export const deleteStudent = (id) => {
-    axios.delete(`/student/delete/${id}`).then(resp => {
-        return {
+export const deleteStudent = ({dispatch, id}) => {
+    axios.delete(`/students/delete/${id}`).then(resp => {
+        dispatch({
             type: types.DELETE_STUDENT,
             payload: id
-        }
+        })
     })
 }
