@@ -250,7 +250,7 @@ export default function Attendance() {
           {/* {rows.map((row) => ( */}
           {state && state.map((row) => (
             <StyledTableRow key={row._id}>
-              <StyledTableCell>
+              <StyledTableCell align="center">
                 <IconButton aria-label="delete">
                   <DeleteIcon onClick={() => {deleteAnAttendance(row._id)}}/>
                 </IconButton>
