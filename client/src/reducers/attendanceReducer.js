@@ -9,6 +9,8 @@ const attendanceReducer = (state, action) => {
         case types.GET_ATTENDANCE_BY_DATE_AND_COURSE:
             // console.log("Attendance reducer: ",action.payload)
             return action.payload
+        case types.DELETE_ATTENDANCE:
+            return [...state.filter(item => (item._id !== action.payload))]
         default:
             return []
     }

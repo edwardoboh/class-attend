@@ -38,3 +38,12 @@ export const getAttendanceByDateAndCourse = ({dispatch, courseSelect, id}) => {
         })
     }).catch(e => console.log(e))
 }
+
+export const deleteAttendance = ({dispatch, id}) => {
+    axios.delete(`/attendance/delete/${id}`).then(resp => {
+        dispatch({
+            type: types.DELETE_ATTENDANCE,
+            payload: id
+        })
+    })
+}

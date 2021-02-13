@@ -2,6 +2,92 @@ const express = require("express")
 const route = express.Router()
 const Lecturer = require("../../models/Lecturers")
 
+// *********************************************************
+// 
+// const Lecturer = require('./models/Lecturers')
+const cron = require("node-cron")
+const nodemailer = require("nodemailer")
+const { getMaxListeners } = require("../../models/Lecturers")
+
+
+const courseMap = {
+    MCT502: "0 7 * * Monday",
+    MCT304: "0 7 * * Tuesday",
+    MCT508: "0 7 * * Wednesday",
+    MCT516: "0 10 * * Monday",
+    MCT506: "0 9 * * Tuesday",
+    MCT510: "0 9 * * Wednesday",
+    MCT313: "0 10 * * Thursday",
+    MCT528: "0 11 * * Tuesday",
+    MCT524: "0 11 * * Monday,Wednesday",
+    MCT526: "0 12 * * Monday",
+    MCT512: "0 13 * * Tuesday",
+    MCT504: "0 13 * * Wednesday",
+    MCT314: "0 14 * * Thursday",
+    FET504: "0 14 * * Monday"
+}
+
+let allTasks = []
+
+// const rescheduleTasks = (newLec) => {
+    // const course = newLec.course
+    // cron.schedule(courseMap[course], () => {
+    //     console.log("Send mail to new user", courseMap[course])
+    // })
+// }
+
+const rescheduleTasks = () => {
+    if(allTasks.length > 0){
+        allTasks.forEach(theTask => {
+            theTask.destroy()
+        })
+        allTasks = []
+    }
+    Lecturer.find().then(resp => {
+        resp.forEach(lecturer => {
+            const course = lecturer.course
+            const task = cron.schedule(courseMap[course], () => {
+                // Send mail to user
+                // console.log(`Now: ${course}`)
+                // console.log(process.env.EMAIL_PASSWORD)
+                const now = new Date()
+                const lectureTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 1)
+                let transporter = nodemailer.createTransport({
+                    host: "smtp.gmail.com",
+                    port: 587,
+                    secure: false,
+                    auth: {
+                        user: "classroomattend@gmail.com",
+                        pass: `${process.env.EMAIL_PASSWORD}`
+                    }
+                })
+
+                let mailOptions = {
+                    from: "classroomattend@gmail.com",
+                    // to: lecturer.email,
+                    to: lecturer.email,
+                    subject: "Lecture Notification",
+                    text: "Message from Class Attend App about your next lecture",
+                    html: `<h1>LECTURE: ${course}</h1><h2>SCHEDULE TIME: ${lectureTime}</h2>`
+                }
+
+                transporter.sendMail(mailOptions, (err, info) => {
+                    if(err){
+                        console.log(err)
+                        return;
+                    }
+                    // console.log("Email Sent: ", info)
+                })
+
+            })
+            allTasks.push(task)
+        })
+    }).catch(e => console.log(e))
+}
+
+
+// *******************************************************
+
 // ROUTE:::     [url]/lecturers
 
 // ROUTE::      [url]/lecturers
@@ -44,8 +130,10 @@ route.post("/signup", (req, res) => {
         newLecturer.save().then(newLec => {
             const user = {user: newLec, isAuthenticated: true}
             res.json({data: user, msg: "Successfully Created new Lecturer"})
+            // rescheduleTasks(newLec)
+            rescheduleTasks()
         }).catch(e => (res.json({data:"", msg:"Unable to create new Lecturer"})))
     }).catch(e => res.json({data:"", msg:"Unable to verify email address"}))
 })
 
-module.exports = route
+module.exports = {route, rescheduleTasks}

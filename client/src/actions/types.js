@@ -9,6 +9,8 @@ const types = {
     SIGNUP: "SIGNUP",
     SIGNOUT: "SIGNOUT",
     GET_LOG: "GET_LOG",
-    CLEAR_LOG: "CLEAR_LOG"
+    CLEAR_LOG: "CLEAR_LOG",
+    DELETE_ATTENDANCE: "DELETE_ATTENDANCE",
+    GET_ASSESSMENT: "GET_ASSESSMENT"
 }
 export default types

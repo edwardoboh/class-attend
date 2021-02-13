@@ -16,10 +16,12 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import Divider from '@material-ui/core/Divider'
 import GetAppIcon from '@material-ui/icons/GetApp';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
 
 import {AttendanceContext} from '../context/AttendanceContext'
 // import {LecturerContext} from '../context/LecturerContext'
-import {getAllAttendance, setCourse, getAttendanceByDateAndCourse} from '../actions/attendanceAction'
+import {getAllAttendance, setCourse, getAttendanceByDateAndCourse, deleteAttendance} from '../actions/attendanceAction'
 // import {useHistory, useRouteMatch} from 'react-router-dom'
 
 import { CSVLink } from "react-csv";
@@ -115,6 +117,9 @@ export default function Attendance() {
     getAllAttendance({dispatch, id})
   }, [])
 
+  const deleteAnAttendance = (id) => {
+    deleteAttendance({dispatch, id})
+  }
   
   return (
     <Paper>
@@ -209,12 +214,12 @@ export default function Attendance() {
               // className={classes.button}
               startIcon={<GetAppIcon />}
               // onClick={() => getAllAttendance({dispatch})}
-              size="small"
+              // size="small"
               className={classes.inputs}
             >
               Download CSV
             </Button>
-          </CSVLink>;
+          </CSVLink>
           <Divider orientation="vertical" flexItem style={{marginRight: "1.5rem", marginLeft:".8rem"}}/>
           <Button
             variant="outlined"
@@ -233,6 +238,7 @@ export default function Attendance() {
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>
+            <StyledTableCell align="center"><strong style={{color: "red"}}>X</strong></StyledTableCell>
             <StyledTableCell>Student Name</StyledTableCell>
             <StyledTableCell align="right">Card ID</StyledTableCell>
             <StyledTableCell align="right">Course</StyledTableCell>
@@ -244,6 +250,11 @@ export default function Attendance() {
           {/* {rows.map((row) => ( */}
           {state && state.map((row) => (
             <StyledTableRow key={row._id}>
+              <StyledTableCell>
+                <IconButton aria-label="delete">
+                  <DeleteIcon onClick={() => {deleteAnAttendance(row._id)}}/>
+                </IconButton>
+              </StyledTableCell>
               <StyledTableCell component="th" scope="row">
                 {row.studentName}
               </StyledTableCell>

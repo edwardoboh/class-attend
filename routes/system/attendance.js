@@ -38,7 +38,7 @@ route.get("/dateandcourse", (req, res) => {
 })
 
 
-// ROUTE::      [url]/attendance/?course=""
+// ROUTE::      [url]/attendance/course/?course=""
 // Route to get all attendance taken on a particular course
 route.get("/course", (req, res) => {
     let AllAttendance = []
@@ -60,7 +60,8 @@ route.get("/course", (req, res) => {
                 }, 0)
                 let oneStudent = {
                     student: thisStudent,
-                    attendanceCount: oneStudentCount
+                    attendanceCount: oneStudentCount,
+                    course: req.query.course
                 }
                 returnAttendanceCount.push(oneStudent)
             })
@@ -103,6 +104,17 @@ route.get("/logs", (req, res) => {
 route.post("/add", (req, res) => {
     // Cannot add Attendance from the UI frontend. Check backend Route
     res.json({data: "", msg: "ERROR: Wrong route"})
+})
+
+// ROUTE::      [url]/attendance/delete
+// Route to DELETE an attendance
+route.delete("/delete/:id", (req, res) => {
+    Attendance.deleteOne({_id: req.params.id}, (err) => {
+        if(err){
+            return res.json({data: "", msg:"Delete was unsuccessful"})
+        }
+        res.json({data:"", msg:"Delete was Successful"})
+    })
 })
 
 module.exports = route

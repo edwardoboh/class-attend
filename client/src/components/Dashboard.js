@@ -22,6 +22,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button'
+import AssessmentIcon from '@material-ui/icons/Assessment';
 // import InboxIcon from '@material-ui/icons/MoveToInbox';
 // import MailIcon from '@material-ui/icons/Mail';
 
@@ -33,6 +34,7 @@ import Attendance from './Attendance';
 import { signout } from '../actions/lecturerAction';
 import {LecturerContext} from '../context/LecturerContext'
 import Timetable from './Timetable'
+import Assessment from './Assessment'
 
 const drawerWidth = 240;
 
@@ -179,6 +181,10 @@ export default function Dashboard() {
               <ListItemIcon><SpellcheckIcon /></ListItemIcon>
               <ListItemText primary={"Attendace"} />
             </ListItem>
+            <ListItem button onClick={() => history.push(`${url}/assessment`)}>
+              <ListItemIcon><AssessmentIcon /></ListItemIcon>
+              <ListItemText primary={"Assessment"} />
+            </ListItem>
             <ListItem button onClick={() => history.push(`${url}/logs`)}>
               <ListItemIcon><CollectionsBookmarkIcon /></ListItemIcon>
               <ListItemText primary={"User Logs"} />
@@ -215,6 +221,9 @@ export default function Dashboard() {
           </Route>
           <Route path={`${path}/attendance`}>
             <Attendance />
+          </Route>
+          <Route path={`${path}/assessment`}>
+            <Assessment />
           </Route>
           <Route path={`${path}/timetable`}>
             <Timetable />

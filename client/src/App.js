@@ -11,6 +11,7 @@ import { StudentProvider } from './context/StudentContext'
 import { AttendanceProvider } from './context/AttendanceContext'
 import { LecturerProvider } from './context/LecturerContext'
 import LogProvider from './context/LogContext'
+import { AssessmentProvider } from './context/Assessment'
 
 function App() {
   return (
@@ -30,9 +31,11 @@ function App() {
                   <SignUp />
                 </PublicRoute>
                 <PrivateRoute path="/dashboard">
-                  <LogProvider>
-                    <Dashboard />
-                  </LogProvider>
+                  <AssessmentProvider>
+                    <LogProvider>
+                      <Dashboard />
+                    </LogProvider>
+                  </AssessmentProvider>
                 </PrivateRoute>
               </Switch>
             </Router>
