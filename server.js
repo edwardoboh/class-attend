@@ -9,15 +9,23 @@ require('dotenv').config()
 //     res.send("Server is Running")
 // })
 
-try{
-    rescheduleTasks()
-    // console.log("Cron Job reschedule Successful")
-}catch{
-    console.log("Cron Job reschedule Failed")
-}
+// // This action should be performed after connecting to database
+// try{
+//     rescheduleTasks()
+//     // console.log("Cron Job reschedule Successful")
+// }catch{
+//     console.log("Cron Job reschedule Failed")
+// }
 
 mongoose.connect(process.env.MONGO_URI, { useUnifiedTopology: true, useNewUrlParser: true}).then(() => {
     console.log("DB Connection Successful")
+    // Re-initializing cron jobs after connecting to db
+    try{
+        rescheduleTasks()
+        // console.log("Cron Job reschedule Successful")
+    }catch{
+        console.log("Cron Job reschedule Failed")
+    }
 })
 app.use(express.json())
 app.use("/reader", require("./routes/reader"))

@@ -1,6 +1,7 @@
 const express = require("express")
 const route = express.Router()
 const Lecturer = require("../../models/Lecturers")
+require('dotenv').config()
 
 // *********************************************************
 // 
@@ -9,6 +10,12 @@ const cron = require("node-cron")
 const nodemailer = require("nodemailer")
 const { getMaxListeners } = require("../../models/Lecturers")
 
+// Constants needed for text messaging with Twilio
+const Twilio = require('twilio')
+const accountSid = process.env.TWILIO_ACCOUNT_SID
+const authToken = process.env.TWILIO_AUTH_TOKEN
+const client = Twilio(accountSid, authToken)
+const twilioNumber = process.env.TWILIO_PHONE_NUMBER
 
 const courseMap = {
     MCT502: "0 7 * * Monday",
@@ -46,7 +53,9 @@ const rescheduleTasks = () => {
     Lecturer.find().then(resp => {
         resp.forEach(lecturer => {
             const course = lecturer.course
+            if(courseMap[course] === undefined) return;
             const task = cron.schedule(courseMap[course], () => {
+            // const task = cron.schedule(courseMap[course], () => {
                 // Send mail to user
                 // console.log(`Now: ${course}`)
                 // console.log(process.env.EMAIL_PASSWORD)
@@ -71,6 +80,7 @@ const rescheduleTasks = () => {
                     html: `<h1>LECTURE: ${course}</h1><h2>SCHEDULE TIME: ${lectureTime}</h2>`
                 }
 
+                // send the email
                 transporter.sendMail(mailOptions, (err, info) => {
                     if(err){
                         console.log(err)
@@ -78,6 +88,22 @@ const rescheduleTasks = () => {
                     }
                     // console.log("Email Sent: ", info)
                 })
+
+                // Send Text message
+                const lecturerPhone = lecturer.phone
+                if(lecturerPhone.length === 11){
+                    const fullNumber = `+234${lecturerPhone.substring(1)}`
+                    client.messages
+                    .create({
+                        from: twilioNumber,
+                        to: fullNumber,
+                        body: "Lecture Notification | LECTURE: ${course} | SCHEDULE TIME: ${lectureTime}"
+                    }).then(textResp => {
+                        console.log("Text message sent")
+                    })
+                }else{
+                    console.log("Error with Lecturer phone number")
+                }
 
             })
             allTasks.push(task)

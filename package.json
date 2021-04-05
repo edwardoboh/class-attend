@@ -19,7 +19,8 @@
     "express": "^4.17.1",
     "mongoose": "^5.11.13",
     "node-cron": "^2.0.3",
-    "nodemailer": "^6.4.17"
+    "nodemailer": "^6.4.17",
+    "twilio": "^3.59.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
