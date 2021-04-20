@@ -12,10 +12,12 @@ import { AttendanceProvider } from './context/AttendanceContext'
 import { LecturerProvider } from './context/LecturerContext'
 import LogProvider from './context/LogContext'
 import { AssessmentProvider } from './context/Assessment'
+import ErrorProvider from './context/ErrorContext'
 
 function App() {
   return (
     <div className="App">
+      <ErrorProvider>
       <LecturerProvider>
         <StudentProvider>
           <AttendanceProvider>
@@ -42,6 +44,7 @@ function App() {
           </AttendanceProvider>
         </StudentProvider>
       </LecturerProvider>
+      </ErrorProvider>
     </div>
   );
 }

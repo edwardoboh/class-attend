@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -8,6 +8,9 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 // import Box from '@material-ui/core/Box';
+import Alert from '@material-ui/lab/Alert';
+import types from '../../actions/types'
+
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,6 +20,7 @@ import {signin} from '../../actions/lecturerAction'
 import {LecturerContext} from '../../context/LecturerContext'
 import {useHistory} from 'react-router-dom'
 
+import {ErrorContext} from '../../context/ErrorContext'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -47,6 +51,7 @@ export default function SignIn() {
   })
 
   const {state, dispatch} = useContext(LecturerContext)
+  const {errorState, errorDispatch} = useContext(ErrorContext)
 
   const classes = useStyles();
 
@@ -55,12 +60,20 @@ export default function SignIn() {
   }
 
   const handleSigninSubmit = () => {
-    signin({dispatch, login})
+    signin({errorDispatch, dispatch, login})
     if(state.isAuthenticated){
       history.push("/dashboard")
+    }else{
+      // console.log(errorState)
     }
 
   }
+
+  useEffect(() => {
+    errorDispatch({
+      type: types.CLEAR_ERRORS
+    })
+  }, [login])
 
   return (
     <Container component="main" maxWidth="xs">
@@ -72,6 +85,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
+        {errorState.length > 0 ? <Alert severity="error">{errorState}</Alert> : ""}
         <form className={classes.form} noValidate>
           <TextField
             variant="outlined"

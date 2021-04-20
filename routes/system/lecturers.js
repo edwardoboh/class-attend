@@ -90,20 +90,20 @@ const rescheduleTasks = () => {
                 })
 
                 // Send Text message
-                const lecturerPhone = lecturer.phone
-                if(lecturerPhone.length === 11){
-                    const fullNumber = `+234${lecturerPhone.substring(1)}`
-                    client.messages
-                    .create({
-                        from: twilioNumber,
-                        to: fullNumber,
-                        body: "Lecture Notification | LECTURE: ${course} | SCHEDULE TIME: ${lectureTime}"
-                    }).then(textResp => {
-                        console.log("Text message sent")
-                    })
-                }else{
-                    console.log("Error with Lecturer phone number")
-                }
+                // const lecturerPhone = lecturer.phone
+                // if(lecturerPhone.length === 11){
+                //     const fullNumber = `+234${lecturerPhone.substring(1)}`
+                //     client.messages
+                //     .create({
+                //         from: twilioNumber,
+                //         to: fullNumber,
+                //         body: "Lecture Notification | LECTURE: ${course} | SCHEDULE TIME: ${lectureTime}"
+                //     }).then(textResp => {
+                //         console.log("Text message sent")
+                //     })
+                // }else{
+                //     console.log("Error with Lecturer phone number")
+                // }
 
             })
             allTasks.push(task)
@@ -133,12 +133,12 @@ route.post("/signin", (req, res) => {
     const {email, password} = req.body
     Lecturer.findOne({$and: [{email}, {password}]}).then(resp => {
         if(!resp){
-            return res.json({data: "", msg: "Invalid Credentials"})
+            return res.json({data: "", msg: "", err: "Invalid Credentials"})
         }
         const user = {user: resp, isAuthenticated: true}
         res.json({data: user, msg:"Signin successful"})
     }).catch(e => {
-        res.json({data: "", msg: "Unable to Signin"})
+        res.json({data: "", msg: "", err: "Invalid credentials, Unable to Signin."})
     })
 })
 
@@ -148,7 +148,7 @@ route.post("/signup", (req, res) => {
     const {fullName, email, password, phone, course } = req.body
     Lecturer.findOne({email}).then(resp => {
         if(resp){
-            return res.json({data:"", msg:"A user with this email already exist"})
+            return res.json({data:"", msg:"", err:"A user with this email already exist"})
         }
         const newLecturer = new Lecturer(
             {fullName, email, password, phone, course }
@@ -158,8 +158,8 @@ route.post("/signup", (req, res) => {
             res.json({data: user, msg: "Successfully Created new Lecturer"})
             // rescheduleTasks(newLec)
             rescheduleTasks()
-        }).catch(e => (res.json({data:"", msg:"Unable to create new Lecturer"})))
-    }).catch(e => res.json({data:"", msg:"Unable to verify email address"}))
+        }).catch(e => (res.json({data:"", msg:"", err:"Unable to create new Lecturer"})))
+    }).catch(e => res.json({data:"", msg:"", err: "Unable to verify email address"}))
 })
 
 module.exports = {route, rescheduleTasks}

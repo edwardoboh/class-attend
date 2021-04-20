@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -8,6 +8,9 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 // import Box from '@material-ui/core/Box';
+import {ErrorContext} from '../../context/ErrorContext'
+import Alert from '@material-ui/lab/Alert';
+import types from '../../actions/types'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -55,15 +58,30 @@ export default function SignUp() {
     setLogup({...logup, [event.target.name]: event.target.value})
   }
 
+
+  const [errorMsg, setErrorMsg] = useState("")
+
   const handleSubmit = () => {
     const {fullName, email, password, phone, course} = logup
     // console.log(logup, !(!fullName || !email || !password || !phone || !course))
-    if(!fullName || !email || !password || !phone || !course) return;
-    signup({dispatch, logup})
+    if(!fullName || !email || !password || !phone || !course){
+      setErrorMsg("You must enter all fields")
+      return;
+    }
+    signup({errorDispatch, dispatch, logup})
     if(state.isAuthenticated){
       history.push("/dashboard")
     }
   }
+
+  const {errorState, errorDispatch} = useContext(ErrorContext)
+
+  useEffect(() => {
+    setErrorMsg("")
+    errorDispatch({
+      type: types.CLEAR_ERRORS
+    })
+  }, [logup])
 
   return (
     <Container component="main" maxWidth="xs">
@@ -75,6 +93,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
+        {errorState.length > 0 || errorMsg ? <Alert severity="error">{[...errorState, errorMsg]}</Alert> : ""}
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
